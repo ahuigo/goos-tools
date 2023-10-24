@@ -3,7 +3,7 @@ package examples
 import (
 	"testing"
 
-	"github.com/ahuigo/goos-utils/netstat"
+	"github.com/ahuigo/goos-tools/netstat"
 	"github.com/stretchr/testify/assert"
 )
 

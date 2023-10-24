@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ahuigo/goos-utils/shell"
+	"github.com/ahuigo/goos-tools/shell"
 
 	"github.com/samber/lo"
 )

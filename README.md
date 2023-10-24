@@ -1,12 +1,12 @@
-# goos-utils
-Os utils for golang
+# goos-tools
+Os tools for golang
 
 ## netstat
-For more examples, refer to [examples](https://github.com/ahuigo/goos-utils/blob/master/examples) 
+For more examples, refer to [examples](https://github.com/ahuigo/goos-tools/blob/master/examples) 
 
     import (
         "testing"
-        "github.com/ahuigo/goos-utils/netstat"
+        "github.com/ahuigo/goos-tools/netstat"
         "github.com/stretchr/testify/assert"
     )
 
@@ -19,13 +19,13 @@ For more examples, refer to [examples](https://github.com/ahuigo/goos-utils/blob
     }
 
 ## lsof
-For more examples, refer to [examples](https://github.com/ahuigo/goos-utils/blob/master/examples) 
+For more examples, refer to [examples](https://github.com/ahuigo/goos-tools/blob/master/examples) 
 
 ```
 import (
 	"testing"
 
-	"github.com/ahuigo/goos-utils/lsof"
+	"github.com/ahuigo/goos-tools/lsof"
 	"github.com/stretchr/testify/assert"
 )
 

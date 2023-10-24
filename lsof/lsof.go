@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/ahuigo/goos-utils/shell"
+	"github.com/ahuigo/goos-tools/shell"
 )
 
 type LsofItem struct {

@@ -1,6 +1,6 @@
 package netstat
 
-import "github.com/ahuigo/goos-utils/lsof"
+import "github.com/ahuigo/goos-tools/lsof"
 
 func GetAllTcpConnections() (conns []TcpConnection, err error) {
 	lsofTcps, err := lsof.GetLsofTcps()

@@ -1,4 +1,4 @@
-module github.com/ahuigo/goos-utils
+module github.com/ahuigo/goos-tools
 
 go 1.20
 
