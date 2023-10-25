@@ -11,6 +11,6 @@ func TestGetAllTcpConnections(t *testing.T) {
 	tcps, err := netstat.GetAllTcpConnections()
 	assert.NoError(t, err)
 	for _, tcp := range tcps {
-		t.Logf("local:%s, remote:%s, state:%s", tcp.LocalAddr, tcp.ForeignAddr, tcp.State)
+		t.Logf("proto:%s, local:%s, remote:%s, state:%s", tcp.Proto,tcp.LocalAddr, tcp.ForeignAddr, tcp.State)
 	}
 }

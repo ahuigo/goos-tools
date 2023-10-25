@@ -1,6 +1,7 @@
 package netstat
 
 type TcpConnection struct {
+	// tcp, tcp6, udp, udp6, ...
 	Proto string
 	// Recv-Q 表示接收队列的长度，即等待应用程序读取的数据量。如果 Recv-Q 的值很大，说明应用程序没有及时读取数据，或者网络拥塞导致数据传输缓慢。
 	RecvQ int

@@ -12,11 +12,11 @@ type LsofItem struct {
 	Pid     string
 	User    string
 	Fd      string
-	// IPv6/IPv4/Unix/...
-	Type   string
-	Device string
+	Device  string
 	//SIZE/OFF 代表常规文件的偏移，对于网络socket无意义。
 	SizeOff string
+	// IPv6/IPv4/Unix/...
+	Type string
 	// 文件inode 或 TCP/UDP
 	Node string
 	// 文件或socket链接
