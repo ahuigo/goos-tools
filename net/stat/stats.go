@@ -131,6 +131,7 @@ func GetStats(interfaceName string) (stats Stats, err error) {
 	if interfaceName == "" {
 		interfaceName = interfaces[0].Name
 	}
+	stats.InterfaceName = interfaceName
 	stats.NetStats, err1 = getNetstats(interfaceName)
 	stats.BufferSizes, err2 = getBufferStats()
 	return stats, errors.Join(err1, err2)
