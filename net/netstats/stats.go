@@ -1,4 +1,16 @@
-package netio
+package netstats
+
+import (
+	"errors"
+	"net"
+	"os"
+	"path/filepath"
+	"sort"
+	"strconv"
+	"strings"
+
+	"github.com/samber/lo"
+)
 
 /*
 在 /sys/class/net/eth0/statistics/ 目录下，有若干文件记录了网络接口 eth0 的输入输出统计数据。以下是其中一些与网络I/O瓶颈相关的重要文件及其含义：
@@ -68,17 +80,6 @@ package netio
 
 */
 
-import (
-	"errors"
-	"net"
-	"os"
-	"path/filepath"
-	"strconv"
-	"strings"
-
-	"github.com/samber/lo"
-)
-
 // NetStats 代表了网络接口的统计数据
 type NetStats struct {
 	//如果你看到这两个数值在不断增长，并且接近网卡的最大带宽，那可能意味着网络接口接近或达到其容量极限。
@@ -100,14 +101,6 @@ type NetStats struct {
 	TxCarrierErrors int64 `json:"tx_carrier_errors"` // 网络载波相关的错误次数
 }
 
-// readNetStat 从对应的文件中读取网络统计值
-func readNetStat(interfaceName string, stat string) (int64, error) {
-	data, err := os.ReadFile(filepath.Join("/sys/class/net", interfaceName, "statistics", stat))
-	if err != nil {
-		return 0, err
-	}
-	return strconv.ParseInt(strings.TrimSpace(string(data)), 10, 64)
-}
 
 type Stats struct {
 	NetStats
@@ -129,13 +122,51 @@ func GetStats(interfaceName string) (stats Stats, err error) {
 		return inf.Name
 	})
 	if interfaceName == "" {
-		interfaceName = interfaces[0].Name
+		interfaceName, _ = getMainInterfaceName()
 	}
 	stats.InterfaceName = interfaceName
+
 	stats.NetStats, err1 = getNetstats(interfaceName)
 	stats.BufferSizes, err2 = getBufferStats()
 	return stats, errors.Join(err1, err2)
 }
+
+func getMainInterfaceName() (string, error) {
+	interfaces, err := net.Interfaces()
+	if err != nil {
+		return "", err
+	}
+	if len(interfaces) == 0 {
+		return "", errors.New("no interface")
+	}
+	type strint struct{
+		name string
+		bytes int64
+	}
+	data:= []strint{}
+	for _, inf := range interfaces {
+		if inf.Flags&net.FlagUp != 0 && inf.Flags&net.FlagLoopback == 0 {
+			return inf.Name, nil
+		}
+		rx, _ := readNetStat(inf.Name, "rx_bytes")
+		tx, _ := readNetStat(inf.Name, "tx_bytes")
+		data = append(data, strint{inf.Name, tx+rx})
+	}
+	sort.Slice(data, func(i, j int) bool {
+		return data[i].bytes > data[j].bytes
+	})
+	return data[0].name, nil
+}
+
+// readNetStat 从对应的文件中读取网络统计值
+func readNetStat(interfaceName string, stat string) (int64, error) {
+	data, err := os.ReadFile(filepath.Join("/sys/class/net", interfaceName, "statistics", stat))
+	if err != nil {
+		return 0, err
+	}
+	return strconv.ParseInt(strings.TrimSpace(string(data)), 10, 64)
+}
+
 
 func getNetstats(interfaceName string) (NetStats, error) {
 	// interfaceName := "eth0" // 替换为您实际的网卡接口名称
@@ -168,12 +199,14 @@ func getNetstats(interfaceName string) (NetStats, error) {
 
 // BufferSizes 存储了缓冲区大小信息
 type BufferSizes struct {
-	TCPReadMem     string `json:"tcp_rmem"`     // TCP接收缓冲区大小 (最小值、默认值、最大值)
+	TCPReadMem     string `json:"tcp_rmem"`     // TCP接收缓冲区大小bytes (最小值、默认值、最大值)
 	TCPWriteMem    string `json:"tcp_wmem"`     // TCP发送缓冲区大小 (最小值、默认值、最大值)
-	UDPReadMem     int64  `json:"udp_rmem_min"` // UDP接收操作的最小缓冲区大小
-	UDPWriteMem    int64  `json:"udp_wmem_min"` // UDP发送操作的最小缓冲区大小
-	UDPReadMemMax  int64  `json:"udp_rmem_max"` // UDP接收操作的最大缓冲区大小
-	UDPWriteMemMax int64  `json:"udp_wmem_max"` // UDP发送操作的最大缓冲区大小
+	TCPMem     string `json:"tcp_mem"`     // TCP缓冲区大小 (最小值、默认值、最大值)
+	UDPMem     string `json:"udp_mem"`     // UDP缓冲区大小 (最小值、默认值、最大值)
+	ReadMem     int64  `json:"rmem_min"` // 接收的最小缓冲区大小
+	WriteMem    int64  `json:"wmem_min"` // 发送操作的最小缓冲区大小
+	ReadMemMax  int64  `json:"rmem_max"` // 接收操作的最大缓冲区大小
+	WriteMemMax int64  `json:"wmem_max"` // 发送操作的最大缓冲区大小
 }
 
 // readSysctl 从 /proc/sys 目录中读取指定的内核参数
@@ -185,30 +218,34 @@ func readSysctl(param string) (string, error) {
 	return strings.TrimSpace(string(data)), nil
 }
 
-func parseSysctlToInt64(value string) (int64, error) {
+func strconvToInt64(value string) (int64, error) {
 	return strconv.ParseInt(value, 10, 64)
 }
 
 func getBufferStats() (bufferSizes BufferSizes, err error) {
-	// 获取TCP缓冲区大小
+	// 获取TCP缓冲区大小(优化级最高): 最小值 默认值 最大值(bytes)
 	bufferSizes.TCPReadMem, _ = readSysctl("net.ipv4.tcp_rmem")
-
 	bufferSizes.TCPWriteMem, _ = readSysctl("net.ipv4.tcp_wmem")
 
-	// 获取UDP缓冲区大小
-	udpRmemMin, _ := readSysctl("net.core.rmem_min")
-	bufferSizes.UDPReadMem, err = parseSysctlToInt64(udpRmemMin)
+	// 获取TCP缓冲区大小(tcp全局): 最小值 默认值 最大值(bytes)
+	bufferSizes.TCPMem, _ = readSysctl("net.ipv4.tcp_mem")
+	// 获取UDP缓冲区大小((tcp全局)): 最小值 默认值 最大值(bytes)
+	bufferSizes.UDPMem, _ = readSysctl("net.ipv4.udp_mem")
 
-	udpWmemMin, _ := readSysctl("net.core.wmem_min")
+	// 获取缓冲区大小(系统全局)
+	rmemMin, _ := readSysctl("net.core.rmem_default")
+	bufferSizes.ReadMem, err = strconvToInt64(rmemMin)
 
-	bufferSizes.UDPWriteMem, _ = parseSysctlToInt64(udpWmemMin)
+	wmemMin, _ := readSysctl("net.core.wmem_default")
 
-	udpRmemMax, _ := readSysctl("net.core.rmem_max")
+	bufferSizes.WriteMem, _ = strconvToInt64(wmemMin)
 
-	bufferSizes.UDPReadMemMax, _ = parseSysctlToInt64(udpRmemMax)
+	rmemMax, _ := readSysctl("net.core.rmem_max")
 
-	udpWmemMax, _ := readSysctl("net.core.wmem_max")
+	bufferSizes.ReadMemMax, _ = strconvToInt64(rmemMax)
 
-	bufferSizes.UDPWriteMemMax, _ = parseSysctlToInt64(udpWmemMax)
+	wmemMax, _ := readSysctl("net.core.wmem_max")
+
+	bufferSizes.WriteMemMax, _ = strconvToInt64(wmemMax)
 	return bufferSizes, err
 }

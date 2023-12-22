@@ -1,9 +1,9 @@
 module github.com/ahuigo/goos-tools
 
-go 1.20
+go 1.21
 
 require (
-	github.com/samber/lo v1.38.1
+	github.com/samber/lo v1.39.0
 	github.com/stretchr/testify v1.8.4
 )
 
