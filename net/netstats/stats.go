@@ -80,8 +80,8 @@ import (
 
 */
 
-// NetStats 代表了网络接口的统计数据
-type NetStats struct {
+// Netstats 代表了网络接口的统计数据
+type Netstats struct {
 	//如果你看到这两个数值在不断增长，并且接近网卡的最大带宽，那可能意味着网络接口接近或达到其容量极限。
 	RxBytes int64 `json:"rx_bytes"` // 接收的总字节数
 	TxBytes int64 `json:"tx_bytes"` // 发送的总字节数
@@ -103,14 +103,15 @@ type NetStats struct {
 
 
 type Stats struct {
-	NetStats
+	Netstats	
+	Sockstat      *SockStat   `json:"sockstat"`
 	BufferSizes
 	InterfaceName  string   `json:"interface_name"`
 	InterfaceNames []string `json:"interface_names"`
 }
 
 func GetStats(interfaceName string) (stats Stats, err error) {
-	var err1, err2 error
+	var err1, err2, err3 error
 	interfaces, err := net.Interfaces()
 	if err != nil {
 		return stats, err
@@ -126,9 +127,10 @@ func GetStats(interfaceName string) (stats Stats, err error) {
 	}
 	stats.InterfaceName = interfaceName
 
-	stats.NetStats, err1 = getNetstats(interfaceName)
-	stats.BufferSizes, err2 = getBufferStats()
-	return stats, errors.Join(err1, err2)
+	stats.Netstats, err1 = getNetstats(interfaceName)
+	stats.Sockstat, err2 = GetSockStat()
+	stats.BufferSizes, err3 = getBufferStats()
+	return stats, errors.Join(err1, err2, err3)
 }
 
 func getMainInterfaceName() (string, error) {
@@ -168,9 +170,9 @@ func readNetStat(interfaceName string, stat string) (int64, error) {
 }
 
 
-func getNetstats(interfaceName string) (NetStats, error) {
+func getNetstats(interfaceName string) (Netstats, error) {
 	// interfaceName := "eth0" // 替换为您实际的网卡接口名称
-	stats := NetStats{}
+	stats := Netstats{}
 	var err error
 
 	// 逐一读取统计数据并存储到结构体中
@@ -217,6 +219,7 @@ func readSysctl(param string) (string, error) {
 	}
 	return strings.TrimSpace(string(data)), nil
 }
+
 
 func strconvToInt64(value string) (int64, error) {
 	return strconv.ParseInt(value, 10, 64)

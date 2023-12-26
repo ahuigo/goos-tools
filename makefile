@@ -1,5 +1,10 @@
 
 msg?=
+run:
+	go run ./... 
+runlo:
+	go run ./... -i lo
+
 .ONESHELL:
 gitcheck:
 	if [[ "$(msg)" = "" ]] ; then echo "Usage: make pkg msg='commit msg'";exit 20; fi
