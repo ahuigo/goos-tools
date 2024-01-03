@@ -1,0 +1,43 @@
+<style>
+    table {
+    border-collapse: collapse;
+    }
+
+    td, th {
+    border: 1px solid black;
+    }
+</style>
+<div id="main">
+<h1>Hostname: {{.hostname}} netstat statisic</h1>
+<table>
+{{range $key, $value := .statisic}}
+<tr>
+	 <th>{{$key}}</th><td> {{$value}}</td>
+</tr>
+{{end}}
+</table>
+
+<hr/>
+<h2>TCP Connections:</h1>
+	<table>
+		<tr>
+		<th>State</th>
+		<th>Proto</th>
+		<th>LocalAddr</th>
+		<th>RemoteAddr</th>
+		</tr>
+{{range $i, $r := .conns}}
+		<tr>
+			<th>{{$r.State}}</th>
+			<td>{{$r.Proto}}</td>
+			<td>{{$r.LocalAddr}}</td>
+			<td>{{$r.ForeignAddr}}</td>
+		</tr>
+{{end}}
+	</table>
+</div>
+<script src="./bundle.js"> </script>
+<script>
+window.onload = function() {
+}
+</script>
