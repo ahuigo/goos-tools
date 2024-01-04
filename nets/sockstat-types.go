@@ -1,4 +1,4 @@
-package netstats
+package nets
 
 /**
 $ cat /proc/net/sockstat

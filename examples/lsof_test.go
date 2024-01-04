@@ -3,7 +3,7 @@ package examples
 import (
 	"testing"
 
-	"github.com/ahuigo/goos-tools/lsof"
+	"github.com/ahuigo/goos-tools/cli/lsof"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -4,7 +4,7 @@ import (
 	"flag"
 
 	"github.com/ahuigo/goos-tools/helper"
-	"github.com/ahuigo/goos-tools/net/netstats"
+	"github.com/ahuigo/goos-tools/nets"
 )
 
 func main() {
@@ -17,7 +17,7 @@ func main() {
 		interfaceName = *interfaceNameP
 	}
 
-	stats, err := netstats.GetStats(interfaceName)
+	stats, err := nets.GetStats(interfaceName)
 	if err!=nil{
 		panic(err)
 	}

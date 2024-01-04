@@ -1,4 +1,4 @@
-package netstats
+package nets
 
 import (
 	"testing"

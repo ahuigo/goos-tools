@@ -6,9 +6,8 @@ import (
 )
 
 func TestExecCommand(t *testing.T) {
-	stdout, stderr, errno := ExecCommand("sh", "-c", "echo succ&& netstat -asdfadsfasdf")
+	stdout, stderr, errno := ExecCommand("sh", "-c", `echo abc;ls | wc -l `)
 	t.Log("stdout:", stdout)
 	t.Log("stderr:", stderr)
 	t.Log("errno:", errno)
-
 }
