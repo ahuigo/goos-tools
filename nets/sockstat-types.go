@@ -8,6 +8,8 @@ UDP: inuse 5 mem 2
 UDPLITE: inuse 0
 RAW: inuse 0
 FRAG: inuse 0 memory 0
+
+Refer to: https://github.com/netdata/netdata/issues/743
 分析一下：
 	sockets: used 241
 		系统中当前使用的套接字总数。
@@ -15,7 +17,7 @@ FRAG: inuse 0 memory 0
 		inuse：当前打开的 TCP 套接字数量。
 		orphan：没有关联进程的 TCP 套接字数量，通常是因为原来的进程已经结束，但是 TCP 连接还没有完全关闭。
 		tw：处于 TIME-WAIT 状态的 TCP 套接字数量。TIME-WAIT 是 TCP 连接关闭过程中的一个状态。
-		alloc：已分配但还未使用的 TCP 套接字数量。
+		alloc：已分配的 TCP 套接字数量。 包括已使用、等待释放（例如，处于 TIME_WAIT 状态）以及Closed 的套接字(`ss -s`)
 		mem：TCP 缓冲区使用的内存页数(已使用)。默认，每个页的大小为 os.Getpagesize()=4KB
 	UDP: inuse 5 mem 2
 		inuse：当前打开的 UDP 套接字数量。

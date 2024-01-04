@@ -5,15 +5,18 @@
     td, th, pre {
         border: 1px solid black;
     }
+    #net-statistic {
+        max-height: 584px;
+        overflow: auto;
+    }
 </style>
 <div id="main">
 <h1>Hostname: {{.hostname}} netstat detail</h1>
 <hr/>
-<h2>Network statis:</h2>
-    <pre> {{.netsStr}} </pre>
-
-<hr/>
 <h2>Network statistic:</h2>
+    <pre id="net-statistic"> {{.netsStr}} </pre>
+
+<h2>TCP Connections:</h1>
     <table>
         {{range $key, $value := .tcpCounts}}
         <tr>
@@ -21,8 +24,6 @@
         </tr>
         {{end}}
     </table>
-
-<h2>TCP Connections:</h1>
     <table>
         <tr>
             <th>State</th>

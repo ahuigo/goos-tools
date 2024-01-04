@@ -1,8 +1,28 @@
+- [goos-tools](#goos-tools)
+  - [Net statistic](#net-statistic)
+  - [lsof](#lsof)
+- [gonic-tools](#gonic-tools)
+  - [Show Stat](#show-stat)
+
 # goos-tools
 Os tools for golang
 
-## netstat
-For more examples, refer to [examples](https://github.com/ahuigo/goos-tools/blob/master/examples) 
+## Net statistic
+Example1: https://github.com/ahuigo/goos-tools/blob/main/nets/stats_linux_test.go
+    import (
+        "testing"
+        "github.com/ahuigo/goos-tools/helper"
+        "github.com/stretchr/testify/assert"
+    )
+
+    func TestGetStats(t *testing.T) {
+        stats, err := GetStats("")
+        assert.NoError(t, err)
+        assert.NotEqual(t, "", stats.InterfaceName)
+        helper.PrintPretty(stats)
+    }
+
+Example2: https://github.com/ahuigo/goos-tools/blob/master/examples
 
     import (
         "testing"
