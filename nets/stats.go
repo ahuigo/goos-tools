@@ -3,11 +3,9 @@ package nets
 import (
 	"errors"
 	"net"
-	"os"
-	"path/filepath"
+	"runtime"
 	"sort"
 	"strconv"
-	"strings"
 
 	"github.com/samber/lo"
 )
@@ -147,7 +145,7 @@ func getMainInterfaceName() (string, error) {
 	}
 	data:= []strint{}
 	for _, inf := range interfaces {
-		if inf.Flags&net.FlagUp != 0 && inf.Flags&net.FlagLoopback == 0 {
+		if runtime.GOOS != "darwin" && inf.Flags&net.FlagUp != 0 && inf.Flags&net.FlagLoopback == 0 {
 			return inf.Name, nil
 		}
 		rx, _ := readNetStat(inf.Name, "rx_bytes")
@@ -160,14 +158,6 @@ func getMainInterfaceName() (string, error) {
 	return data[0].name, nil
 }
 
-// readNetStat 从对应的文件中读取网络统计值
-func readNetStat(interfaceName string, stat string) (int64, error) {
-	data, err := os.ReadFile(filepath.Join("/sys/class/net", interfaceName, "statistics", stat))
-	if err != nil {
-		return 0, err
-	}
-	return strconv.ParseInt(strings.TrimSpace(string(data)), 10, 64)
-}
 
 
 func getNetstats(interfaceName string) (Netstats, error) {
@@ -211,17 +201,13 @@ type BufferSizes struct {
 	WriteMemMax int64  `json:"wmem_max"` // 发送操作的最大缓冲区大小
 }
 
-// readSysctl 从 /proc/sys 目录中读取指定的内核参数
-func readSysctl(param string) (string, error) {
-	data, err := os.ReadFile(filepath.Join("/proc/sys", strings.Replace(param, ".", "/", -1)))
-	if err != nil {
-		return "", err
-	}
-	return strings.TrimSpace(string(data)), nil
-}
+
 
 
 func strconvToInt64(value string) (int64, error) {
+	if value == "" {
+		return 0, nil
+	}
 	return strconv.ParseInt(value, 10, 64)
 }
 
