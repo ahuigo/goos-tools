@@ -7,7 +7,7 @@
         border: 1px solid rgb(107 114 128);
     }
     #net-statistic {
-        max-height: 300px;
+        max-height: 330px;
         overflow: auto;
     }
 </style>
@@ -23,31 +23,31 @@
                 <tr>
                     <th scope="col">Interface</th><td> {{.nets.InterfaceName}}</td>
                 </tr> <tr>
-                    <th scope="col">RxBytes</th><td> {{.nets.RxBytes}}</td>
+                    <th scope="col">RxBytes</th><td> {{.nets.RxBytes}}B</td>
                 </tr> <tr>
-                    <th scope="col">RxDropped</th><td> {{.nets.RxDropped}}</td>
+                    <th scope="col">RxDropped</th><td> {{.nets.RxDropped}} packets</td>
                 </tr> <tr>
                     <th scope="col">RxErrors</th><td> {{.nets.RxErrors}}</td>
                 </tr> <tr>
-                    <th scope="col">TxBytes</th><td> {{.nets.TxBytes}}</td>
+                    <th scope="col">TxBytes</th><td> {{.nets.TxBytes}}B</td>
                 </tr> <tr>
-                    <th scope="col">TxDropped</th><td> {{.nets.TxDropped}}</td>
+                    <th scope="col">TxDropped</th><td> {{.nets.TxDropped}} packets</td>
                 </tr> <tr>
                     <th scope="col">TxErrors</th><td> {{.nets.TxErrors}}</td>
                 </tr> <tr>
-                    <th scope="col">sockets</th><td> {{.nets.Sockstat.Sockets}}</td>
+                    <th scope="col">sockets</th><td> {{.nets.Sockstat.Sockets}} sockets</td>
                 </tr> <tr>
-                    <th scope="col">TCP.inuse</th><td> {{.nets.Sockstat.TCP.InUse}}</td>
+                    <th scope="col">TCP.inuse</th><td> {{.nets.Sockstat.TCP.InUse}} sockets</td>
                 </tr> <tr>
-                    <th scope="col">TCP.tw</th><td> {{.nets.Sockstat.TCP.Tw}}</td>
+                    <th scope="col">TCP.tw</th><td> {{.nets.Sockstat.TCP.Tw}} sockets</td>
                 </tr> <tr>
-                    <th scope="col">TCP.alloc</th><td> {{.nets.Sockstat.TCP.Alloc}}</td>
+                    <th scope="col">TCP.alloc</th><td> {{.nets.Sockstat.TCP.Alloc}} sockets</td>
                 </tr> <tr>
-                    <th scope="col">UDP.inuse</th><td> {{.nets.Sockstat.UDP.InUse}}</td>
+                    <th scope="col">UDP.inuse</th><td> {{.nets.Sockstat.UDP.InUse}} sockets</td>
                 </tr> <tr>
-                    <th scope="col">tcp_rmem</th><td> {{.nets.TCPReadMem}}</td>
+                    <th scope="col">tcp_rmem</th><td> {{.nets.TCPReadMem}} B</td>
                 </tr> <tr>
-                    <th scope="col">tcp_wmem</th><td> {{.nets.TCPWriteMem}}</td>
+                    <th scope="col">tcp_wmem</th><td> {{.nets.TCPWriteMem}} B</td>
                 </tr>
             </table>
         </div>
