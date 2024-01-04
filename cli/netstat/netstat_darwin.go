@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	. "github.com/ahuigo/goos-tools"
-	"github.com/ahuigo/goos-tools/lsof"
+	"github.com/ahuigo/goos-tools/cli/lsof"
 )
 
 func GetAllTcpConnections() (conns []TcpConnection, err error) {
