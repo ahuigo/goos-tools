@@ -1,57 +1,80 @@
+<head>
 <style>
     table {
         border-collapse: collapse;
     }
     td, th, pre {
-        border: 1px solid black;
+        border: 1px solid rgb(107 114 128);
     }
     #net-statistic {
         max-height: 300px;
         overflow: auto;
     }
 </style>
-<div id="main">
-<h1>Hostname: {{.hostname}} netstat detail</h1>
-<hr/>
-<h2>Network statistic:</h2>
-    <table>
-        <tr>
-            <th>Interface</th><td> {{.nets.InterfaceName}}</td>
-            <th>RxBytes</th><td> {{.nets.RxBytes}}</td>
-            <th>RxDropped</th><td> {{.nets.RxDropped}}</td>
-            <th>RxErrors</th><td> {{.nets.RxErrors}}</td>
-            <th>TxBytes</th><td> {{.nets.TxBytes}}</td>
-            <th>TxDropped</th><td> {{.nets.TxDropped}}</td>
-            <th>TxErrors</th><td> {{.nets.TxErrors}}</td>
-            <th>sockets</th><td> {{.nets.Sockstat.Sockets}}</td>
-            <th>TCP.inuse</th><td> {{.nets.Sockstat.TCP.InUse}}</td>
-            <th>TCP.tw</th><td> {{.nets.Sockstat.TCP.Tw}}</td>
-            <th>TCP.alloc</th><td> {{.nets.Sockstat.TCP.Alloc}}</td>
-            <th>UDP.inuse</th><td> {{.nets.Sockstat.UDP.InUse}}</td>
-            <th>tcp_rmem</th><td> {{.nets.TCPReadMem}}</td>
-            <th>tcp_wmem</th><td> {{.nets.TCPWriteMem}}</td>
-        </tr>
-    </table>
-    <pre id="net-statistic"> {{.netsStr}} </pre>
-
-<h2>TCP Connections:</h1>
-    <table>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-2">
+<h1 class="text-4xl text-center font-extrabold">Network detail on Hostname: {{.hostname}} </h1>
+<div>
+    <h2 class="text-3xl font-extrabold">Network statistic:</h2>
+    <div class="flex">
+        <div>
+            <table class="w-full text-sm text-left rtl:text-right dark:text-gray-400">
+                <tr>
+                    <th scope="col">Interface</th><td> {{.nets.InterfaceName}}</td>
+                </tr> <tr>
+                    <th scope="col">RxBytes</th><td> {{.nets.RxBytes}}</td>
+                </tr> <tr>
+                    <th scope="col">RxDropped</th><td> {{.nets.RxDropped}}</td>
+                </tr> <tr>
+                    <th scope="col">RxErrors</th><td> {{.nets.RxErrors}}</td>
+                </tr> <tr>
+                    <th scope="col">TxBytes</th><td> {{.nets.TxBytes}}</td>
+                </tr> <tr>
+                    <th scope="col">TxDropped</th><td> {{.nets.TxDropped}}</td>
+                </tr> <tr>
+                    <th scope="col">TxErrors</th><td> {{.nets.TxErrors}}</td>
+                </tr> <tr>
+                    <th scope="col">sockets</th><td> {{.nets.Sockstat.Sockets}}</td>
+                </tr> <tr>
+                    <th scope="col">TCP.inuse</th><td> {{.nets.Sockstat.TCP.InUse}}</td>
+                </tr> <tr>
+                    <th scope="col">TCP.tw</th><td> {{.nets.Sockstat.TCP.Tw}}</td>
+                </tr> <tr>
+                    <th scope="col">TCP.alloc</th><td> {{.nets.Sockstat.TCP.Alloc}}</td>
+                </tr> <tr>
+                    <th scope="col">UDP.inuse</th><td> {{.nets.Sockstat.UDP.InUse}}</td>
+                </tr> <tr>
+                    <th scope="col">tcp_rmem</th><td> {{.nets.TCPReadMem}}</td>
+                </tr> <tr>
+                    <th scope="col">tcp_wmem</th><td> {{.nets.TCPWriteMem}}</td>
+                </tr>
+            </table>
+        </div>
+        <pre id="net-statistic" class="mx-1"> {{.netsStr}} </pre>
+    </div>
+</div>
+<hr class="my-8">
+<div>
+    <h2 class="text-3xl font-extrabold">TCP Connections:</h2>
+    <table class="w-full text-sm text-left rtl:text-right  dark:text-gray-400">
         {{range $key, $value := .tcpCounts}}
         <tr>
-            <th>{{$key}}</th><td> {{$value}}</td>
+            <th scope="col">{{$key}}</th><td> {{$value}}</td>
         </tr>
         {{end}}
     </table>
-    <table>
+    <hr class="my-2">
+    <table class="w-full text-sm text-left rtl:text-right  dark:text-gray-400">
         <tr>
-            <th>State</th>
-            <th>Proto</th>
-            <th>LocalAddr</th>
-            <th>RemoteAddr</th>
+            <th scope="col">State</th>
+            <th scope="col">Proto</th>
+            <th scope="col">LocalAddr</th>
+            <th scope="col">RemoteAddr</th>
         </tr>
     {{range $i, $r := .conns}}
         <tr>
-            <th>{{$r.State}}</th>
+            <th scope="col">{{$r.State}}</th>
             <td>{{$r.Proto}}</td>
             <td>{{$r.LocalAddr}}</td>
             <td>{{$r.ForeignAddr}}</td>
@@ -63,3 +86,4 @@
 <script>
 window.onload = function() { }
 </script>
+</body>
