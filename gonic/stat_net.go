@@ -21,12 +21,17 @@ func NetStat(c *gin.Context) {
 		c.AbortWithError(400, err)
 		return
 	}
-	s := formatNetwork(conns, nets)
+	s,err := formatNetwork(conns, nets)
+	if err!=nil{
+		c.String(400, err.Error())
+		c.AbortWithError(400, err)
+		return
+	}
 	c.Data(200, "text/html", s)
 	// c.String(200, s)
 }
 
-func formatNetwork(conns []netstat.TcpConnection, nets nets.Stats) []byte {
+func formatNetwork(conns []netstat.TcpConnection, nets nets.Stats) ([]byte,error) {
 	hostname, _:= os.Hostname()
 	tcpCounts := map[string]int{}
 	for _, conn := range conns {
@@ -43,6 +48,6 @@ func formatNetwork(conns []netstat.TcpConnection, nets nets.Stats) []byte {
 		"netsStr": string(netsBytes),
 	}
 
-	s, _ := render("tpl/netstat.tmpl", data)
-	return s
+	s, err := render("tpl/netstat.tmpl", data)
+	return s,err
 }

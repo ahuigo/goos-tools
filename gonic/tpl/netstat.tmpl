@@ -6,7 +6,7 @@
         border: 1px solid black;
     }
     #net-statistic {
-        max-height: 584px;
+        max-height: 300px;
         overflow: auto;
     }
 </style>
@@ -14,6 +14,24 @@
 <h1>Hostname: {{.hostname}} netstat detail</h1>
 <hr/>
 <h2>Network statistic:</h2>
+    <table>
+        <tr>
+            <th>Interface</th><td> {{.nets.InterfaceName}}</td>
+            <th>RxBytes</th><td> {{.nets.RxBytes}}</td>
+            <th>RxDropped</th><td> {{.nets.RxDropped}}</td>
+            <th>RxErrors</th><td> {{.nets.RxErrors}}</td>
+            <th>TxBytes</th><td> {{.nets.TxBytes}}</td>
+            <th>TxDropped</th><td> {{.nets.TxDropped}}</td>
+            <th>TxErrors</th><td> {{.nets.TxErrors}}</td>
+            <th>sockets</th><td> {{.nets.Sockstat.Sockets}}</td>
+            <th>TCP.inuse</th><td> {{.nets.Sockstat.TCP.InUse}}</td>
+            <th>TCP.tw</th><td> {{.nets.Sockstat.TCP.Tw}}</td>
+            <th>TCP.alloc</th><td> {{.nets.Sockstat.TCP.Alloc}}</td>
+            <th>UDP.inuse</th><td> {{.nets.Sockstat.UDP.InUse}}</td>
+            <th>tcp_rmem</th><td> {{.nets.TCPReadMem}}</td>
+            <th>tcp_wmem</th><td> {{.nets.TCPWriteMem}}</td>
+        </tr>
+    </table>
     <pre id="net-statistic"> {{.netsStr}} </pre>
 
 <h2>TCP Connections:</h1>
