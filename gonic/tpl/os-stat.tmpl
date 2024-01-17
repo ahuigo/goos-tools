@@ -16,16 +16,15 @@
 <body class="p-2">
 <h1 class="text-4xl text-center font-extrabold">Stat on Hostname: {{.hostname}} </h1>
 <div>
-    <h2 class="text-3xl font-extrabold">Cpu statistic:</h2>
+    <h2 class="text-3xl font-extrabold">
+        Cpu statistic
+    </h2>
     <div class="flex">
         <div>
             <table class="w-full text-sm text-left rtl:text-right dark:text-gray-400">
                 <tr>
                     <th scope="col">Total</th><td> {{.cpu.Total}}</td>
                 </tr> 
-                <tr>
-                    <th scope="col">Total</th><td> {{.cpu.Total}}</td>
-                </tr>
                 <tr>
                     <th scope="col">User</th><td> {{.cpu.User}}</td>
                 </tr>
@@ -37,12 +36,13 @@
                 </tr>
             </table>
         </div>
-        <pre id="net-statistic" class="mx-1"> {{.cpuStr}} </pre>
     </div>
 </div>
 <hr class="my-8">
 <div>
-    <h2 class="text-3xl font-extrabold">Memory statistic:</h2>
+    <h2 class="text-3xl font-extrabold">
+        Memory statistic
+    </h2>
     <table class="w-full text-sm text-left rtl:text-right  dark:text-gray-400">
         {{ $data := .memory | structToMap }}
         {{ range $key, $value := $data }}
