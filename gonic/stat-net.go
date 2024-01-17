@@ -48,6 +48,6 @@ func formatNetwork(conns []netstat.TcpConnection, nets nets.Stats) ([]byte,error
 		"netsStr": string(netsBytes),
 	}
 
-	s, err := render("tpl/netstat.tmpl", data)
+	s, err := render("tpl/net-stat.tmpl", data)
 	return s,err
 }

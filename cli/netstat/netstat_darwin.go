@@ -3,8 +3,8 @@ package netstat
 import (
 	"strings"
 
-	. "github.com/ahuigo/goos-tools"
 	"github.com/ahuigo/goos-tools/cli/lsof"
+	. "github.com/ahuigo/goos-tools/helper"
 )
 
 func GetAllTcpConnections() (conns []TcpConnection, err error) {
@@ -15,7 +15,7 @@ func GetAllTcpConnections() (conns []TcpConnection, err error) {
 	conns = make([]TcpConnection, len(lsofTcps))
 	for i, tcp := range lsofTcps {
 		// convert TCP/UDP+IPv6 to tcp6/upd6
-		proto:= strings.ToLower(tcp.Node) + IfThen(tcp.Type == "IPv6", "6", "")
+		proto:= strings.ToLower(tcp.Node) + IfElse(tcp.Type == "IPv6", "6", "")
 		conns[i] = TcpConnection{
 			Proto:       proto,
 			LocalAddr:   tcp.LocalAddr,

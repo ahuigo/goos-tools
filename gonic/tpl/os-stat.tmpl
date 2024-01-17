@@ -1,0 +1,59 @@
+<head>
+<style>
+    table {
+        border-collapse: collapse;
+    }
+    td, th, pre {
+        border: 1px solid rgb(107 114 128);
+    }
+    #net-statistic {
+        max-height: 330px;
+        overflow: auto;
+    }
+</style>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-2">
+<h1 class="text-4xl text-center font-extrabold">Stat on Hostname: {{.hostname}} </h1>
+<div>
+    <h2 class="text-3xl font-extrabold">Cpu statistic:</h2>
+    <div class="flex">
+        <div>
+            <table class="w-full text-sm text-left rtl:text-right dark:text-gray-400">
+                <tr>
+                    <th scope="col">Total</th><td> {{.cpu.Total}}</td>
+                </tr> 
+                <tr>
+                    <th scope="col">Total</th><td> {{.cpu.Total}}</td>
+                </tr>
+                <tr>
+                    <th scope="col">User</th><td> {{.cpu.User}}</td>
+                </tr>
+                <tr>
+                    <th scope="col">System</th><td> {{.cpu.System}}</td>
+                </tr>
+                <tr>
+                    <th scope="col">Idle</th><td> {{.cpu.Idle}}</td>
+                </tr>
+            </table>
+        </div>
+        <pre id="net-statistic" class="mx-1"> {{.cpuStr}} </pre>
+    </div>
+</div>
+<hr class="my-8">
+<div>
+    <h2 class="text-3xl font-extrabold">Memory statistic:</h2>
+    <table class="w-full text-sm text-left rtl:text-right  dark:text-gray-400">
+        {{ $data := .memory | structToMap }}
+        {{ range $key, $value := $data }}
+            <tr>
+                <th scope="col">{{ $key }}</th><td> {{ $value }}</td>
+            </tr>
+        {{ end }}
+    </table>
+</div>
+<script src="./bundle.js"> </script>
+<script>
+window.onload = function() { }
+</script>
+</body>
