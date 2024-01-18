@@ -80,7 +80,8 @@ func getOsStat() (res osStat, err error) {
 
 func OsStat(c *gin.Context) {
 	osStat, _ := getOsStat()
-	_, isJson := c.Params.Get("json")
+	// _, isJson := c.Params.Get("json")
+	_, isJson := c.Request.URL.Query()["json"]
 	if !isJson {
 		s, err := formatOs(osStat)
 		if err != nil {

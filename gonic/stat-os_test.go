@@ -9,7 +9,7 @@ import (
 
 // NetStat: show net stat information like shell `netstat`
 func TestOsTpl(t *testing.T) {
-	req :=httptest.NewRequest("GET", "/stat/os?output=pretty", nil)
+	req :=httptest.NewRequest("GET", "/stat/os?json", nil)
 	req.Header.Set("Content-Type", "application/json")
 	resp, ctx := mockContext(req)
 	OsStat(ctx)
