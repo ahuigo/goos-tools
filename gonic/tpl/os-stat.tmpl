@@ -43,14 +43,20 @@
     <h2 class="text-3xl font-extrabold">
         Memory statistic
     </h2>
-    <table class="w-full text-sm text-left rtl:text-right  dark:text-gray-400">
-        {{ $data := .memory | structToMap }}
-        {{ range $key, $value := $data }}
-            <tr>
-                <th scope="col">{{ $key }}</th><td> {{ $value }}</td>
-            </tr>
-        {{ end }}
-    </table>
+    <div class="flex">
+        <table class="w-full text-sm text-left rtl:text-right  dark:text-gray-400">
+            {{ $data := .memory | structToMap }}
+            {{ range $key, $value := $data }}
+                <tr>
+                    <th scope="col">{{ $key }}</th><td> {{ $value }}</td>
+                </tr>
+            {{ end }}
+        </table>
+        <pre class="text-gray-500">
+GoHeapAlloc //go heap使用到的内存
+GoHeapInuse //go heap向操作系统申请的内存(包括GoHeapAlloc, 已经被gc回收但未复用的内存)
+        </pre>
+    </div>
 </div>
 <script src="./bundle.js"> </script>
 <script>

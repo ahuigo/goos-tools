@@ -17,8 +17,8 @@ type MemoryStat struct {
 	Used        string
 	Free        string
 	Cached      string
-	GoHeapAlloc string
-	GoHeapInuse string
+	GoHeapAlloc string //go heap使用到的内存
+	GoHeapInuse string //go heap向操作系统申请的内存(包括GoHeapAlloc, 已经被gc回收但未复用的内存)
 }
 type CpuStat struct {
 		Total  string
