@@ -1,6 +1,7 @@
 package gonic
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"strconv"
@@ -10,10 +11,11 @@ func getOOMScore() (score int, score_adj int) {
 	pid := os.Getpid()
 	score, _ = getFileNum(fmt.Sprintf("/proc/%d/oom_score", pid))
 	score_adj, _ = getFileNum(fmt.Sprintf("/proc/%d/oom_score_adj", pid))
-	return 
+	return
 }
 
-func getFileNum (path string) (int, error) {
-	s, _ := os.ReadFile(path)
-	return strconv.Atoi(string(s))
+func getFileNum(path string) (int, error) {
+	b, _ := os.ReadFile(path)
+	b = bytes.TrimSpace(b)
+	return strconv.Atoi(string(b))
 }
