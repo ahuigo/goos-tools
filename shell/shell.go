@@ -20,6 +20,9 @@ func ExecCommand(name string, args ...string) (output string, errmsg string, err
 			if status, ok := exitErr.Sys().(interface{ ExitStatus() int }); ok {
 				errno = status.ExitStatus()
 			}
+		}else if execErr, ok:= err.(*exec.Error); ok{
+			errmsg = execErr.Error()+" "+errmsg
+			errno = 127
 		}
 	}
 	return
