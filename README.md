@@ -1,11 +1,21 @@
+# goos-tools
+[![tag](https://img.shields.io/github/tag/ahuigo/goos-tools.svg)](https://github.com/ahuigo/goos-tools/tags)
+![Go Version](https://img.shields.io/badge/Go-%3E%3D%201.21-%23007d9c)
+[![GoDoc](https://godoc.org/github.com/ahuigo/goos-tools?status.svg)](https://pkg.go.dev/github.com/ahuigo/goos-tools)
+![Build Status](https://github.com/ahuigo/goos-tools/actions/workflows/test.yml/badge.svg)
+[![Go report](https://goreportcard.com/badge/github.com/ahuigo/goos-tools)](https://goreportcard.com/report/github.com/ahuigo/goos-tools)
+[![Coverage](https://img.shields.io/codecov/c/github/ahuigo/goos-tools)](https://codecov.io/gh/ahuigo/goos-tools)
+[![Contributors](https://img.shields.io/github/contributors/ahuigo/goos-tools)](https://github.com/ahuigo/goos-tools/graphs/contributors)
+[![License](https://img.shields.io/github/license/ahuigo/goos-tools)](./LICENSE)
+
+
+Os tools for golang
+
 - [goos-tools](#goos-tools)
   - [Net statistic](#net-statistic)
   - [lsof](#lsof)
 - [gonic-tools](#gonic-tools)
   - [Show Stat](#show-stat)
-
-# goos-tools
-Os tools for golang
 
 ## Net statistic
 Example1: https://github.com/ahuigo/goos-tools/blob/main/nets/stats_linux_test.go
