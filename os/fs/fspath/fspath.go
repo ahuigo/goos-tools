@@ -1,4 +1,4 @@
-package fslib
+package fspath
 
 import (
 	"os"
@@ -8,7 +8,7 @@ import (
 	"syscall"
 )
 
-func HasReadMode(fpath string) bool {
+func StatHasReadMode(fpath string) bool {
 	fileInfo, err := os.Stat(fpath)
 	if err != nil {
 		return false
@@ -16,6 +16,23 @@ func HasReadMode(fpath string) bool {
 	mode := fileInfo.Mode()
 	return mode&(1<<2) != 0 //rwx
 	// mode&os.ModePerm == os.ModePerm //0777
+}
+
+func StatSize(fpath string) (int, error) {
+	fileInfo, err := os.Stat(fpath)
+	if err != nil {
+		return 0, err
+	}
+	return int(fileInfo.Size()), nil
+}
+
+// is empty file or dir?
+func IsEmpty(fpath string) (bool) {
+	fileInfo, err := os.Stat(fpath)
+	if err != nil {
+		return true
+	}
+	return fileInfo.Size()==0
 }
 
 func IsValidRootDirLinux() bool {
@@ -109,3 +126,5 @@ func IsValidPath(path string) bool {
 		panic(err)
 	}
 }
+
+

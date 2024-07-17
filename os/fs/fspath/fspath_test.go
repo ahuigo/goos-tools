@@ -1,15 +1,15 @@
-package fslib
+package fspath
 
 import (
 	"testing"
 )
 
 func TestHasReadMode(t *testing.T) {
-	HasReadMode("./fs.go")
+	StatHasReadMode("./fspath.go")
 }
 
 func TestIsValidPath(t *testing.T) {
-	if !IsValidPath("./fs.go") {
+	if !IsValidPath("./fspath.go") {
 		t.Fatal("fs.go is valid path")
 	}
 }
