@@ -6,6 +6,7 @@ import (
 	"os"
 	"runtime"
 	"runtime/debug"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mackerelio/go-osstat/cpu"
@@ -13,12 +14,14 @@ import (
 )
 
 type MemoryStat struct {
-	Total         string
-	Used          string
-	Free          string
-	Cached        string
-	GoHeapAlloc   string //go heap使用到的内存
-	GoHeapInuse   string //go heap向操作系统申请的内存(包括GoHeapAlloc, 已经被gc回收但未复用的内存)
+	Total       string
+	Used        string
+	Free        string
+	Cached      string
+	GoHeapAlloc string //go heap使用到的内存
+	GoHeapInuse string //go heap向操作系统申请的内存(包括GoHeapAlloc, 已经被gc回收但未复用的内存)
+	GoMallocs   string // 表示从程序启动到现在，已经分配的堆对象的数量
+	GoFrees     string // 表示从程序启动到现在，已经释放的堆对象的数量
 }
 type CpuStat struct {
 	Total  string
@@ -60,12 +63,14 @@ func getOsStat() (res osStat, err error) {
 
 	res = osStat{
 		Memory: MemoryStat{
-			Total:         toG(memory.Total),
-			Used:          toG(memory.Used),
-			Free:          toG(memory.Free),
-			Cached:        toG(memory.Cached),
-			GoHeapAlloc:   toG(m.HeapAlloc),
-			GoHeapInuse:   toG(m.HeapInuse),
+			Total:       toG(memory.Total),
+			Used:        toG(memory.Used),
+			Free:        toG(memory.Free),
+			Cached:      toG(memory.Cached),
+			GoHeapAlloc: toG(m.HeapAlloc),
+			GoHeapInuse: toG(m.HeapInuse),
+			GoMallocs:   strconv.FormatUint(m.Mallocs, 10),
+			GoFrees:     strconv.FormatUint(m.Frees, 10),
 		},
 		Cpu: CpuStat{
 			Total:  toG(cpuInfo.Total),
@@ -95,8 +100,11 @@ func OsStat(c *gin.Context) {
 		// "buildDate": conf.BuildDate,
 		"cpu":    runtime.GOMAXPROCS(0),
 		"before": osStat,
+		"isJson": isJson,
 		"act":    c.Query("act"),
 	}
+
+	// 2. execute gc action
 	switch c.Query("act") {
 	case "gc":
 		runtime.GC()

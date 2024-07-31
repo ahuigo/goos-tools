@@ -15,6 +15,9 @@
 </head>
 <body class="p-2">
 <h1 class="text-4xl text-center font-extrabold">Stat on Hostname: {{.hostname}} </h1>
+<a class="text-4xl block text-center text-red-500" href="?json">
+    (view json)
+</a> 
 <div>
     <h2 class="text-3xl font-extrabold">
         Cpu statistic
@@ -55,6 +58,8 @@
         <pre class="text-gray-500">
 GoHeapAlloc //go heap使用到的内存
 GoHeapInuse //go heap向操作系统申请的内存(包括GoHeapAlloc, 已经被gc回收但未复用的内存)
+GoMallocs   //go 从启动到现在，已经分配的堆对象的数量
+GoFrees     //go 从启动到现在，已经释放的堆对象的数量
         </pre>
     </div>
 </div>
