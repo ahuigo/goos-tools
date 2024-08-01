@@ -5,6 +5,7 @@ go 1.21
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/mackerelio/go-osstat v0.2.4
+	github.com/pkg/errors v0.9.1
 	github.com/samber/lo v1.39.0
 	github.com/stretchr/testify v1.8.4
 )
