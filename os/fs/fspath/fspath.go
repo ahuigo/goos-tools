@@ -35,6 +35,17 @@ func IsEmpty(fpath string) (bool) {
 	return fileInfo.Size()==0
 }
 
+func IsValidPath(path string) bool {
+	if _, err := os.Stat(path); err == nil {
+		return true
+	} else {
+		if os.IsNotExist(err) {
+			return false
+		}
+		panic(err)
+	}
+}
+
 func IsValidRootDirLinux() bool {
 	// linux: return error if root dir is deleted
 	// mac: return nil(inode is valid even if it is deleted)
@@ -115,16 +126,4 @@ func SafePath(path string) string {
 	path = strings.TrimLeft(path, "/")
 	return path
 }
-
-func IsValidPath(path string) bool {
-	if _, err := os.Stat(path); err == nil {
-		return true
-	} else {
-		if os.IsNotExist(err) {
-			return false
-		}
-		panic(err)
-	}
-}
-
 

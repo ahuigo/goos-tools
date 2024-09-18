@@ -27,6 +27,7 @@ type CpuStat struct {
 	Total  string
 	User   string
 	System string
+	Goroutines int
 	Idle   string
 }
 
@@ -76,6 +77,7 @@ func getOsStat() (res osStat, err error) {
 			Total:  toG(cpuInfo.Total),
 			User:   toG(cpuInfo.User),
 			System: toG(cpuInfo.System),
+			Goroutines:  runtime.NumGoroutine(), // Current number of goroutines
 			Idle:   toG(cpuInfo.Idle),
 		},
 	}
