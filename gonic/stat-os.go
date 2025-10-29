@@ -19,7 +19,8 @@ type MemoryStat struct {
 	Free        string
 	Cached      string
 	GoHeapAlloc string //go heap使用到的内存
-	GoHeapInuse string //go heap向操作系统申请的内存(包括GoHeapAlloc, 已经被gc回收但未复用的内存)
+	GoHeapInuse string //go heap向操作系统申请的堆内存(GoHeapAlloc + gc回收但未复用的内存)
+	GoHeapSys   string //go heap向操作系统申请的堆内存+ Goroutine 栈、Go 运行时内部的数据结构、GC 元数据等所有非堆内存
 	GoMallocs   string // 表示从程序启动到现在，已经分配的堆对象的数量
 	GoFrees     string // 表示从程序启动到现在，已经释放的堆对象的数量
 }

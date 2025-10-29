@@ -50,6 +50,7 @@ func ExecCommandPipe(cmd string, stdinBytes []byte, args ...string) (output []by
 		if _, err = pipe.Write(stdinBytes); err != nil {
 			return nil, err.Error(), 1
 		}
+        pipe.Close()
 	}
 	command.Stdout = &stdout
 	command.Stderr = &stderr
